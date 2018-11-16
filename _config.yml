@@ -1,0 +1,22 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+
+# Setup
+title:               cyb3rdan.com
+tagline:             'Another infosec blog'
+description:         'Another infosec blog'
+url:                 https://cyb3rdan.com
+baseurl:             ''
+plugins: [jekyll-paginate]
+paginate: 5
+paginate_path: "page:num"
+
+# About/contact
+author:
+  name:              Daniel Souter
+  url:               https://twitter.com/cyb3rdan
+
+# Custom vars
+version:             1.0.0
