@@ -48,7 +48,7 @@ python gpprefdecrypt.py edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCp
 
 ![active-impacket]({{site.url}}/assets/images/active/active-impacket.jpg){:class="img-responsive"}
 
-- checked the [Hashcat example hashes page](https://hashcat.net/wiki/doku.php?id=example_hashes) for $krb5tgs$23$ format and found that it matches mode 13100
+- checked the [Hashcat example hashes page](https://hashcat.net/wiki/doku.php?id=example_hashes) for $krb5tgs$23$ format and found that it matched mode 13100
 
 - added the entire $krb5tgs$23$ string above to a file called active.krb, and used hashcat along with the rockyou.txt wordlist to get the password
 
@@ -58,7 +58,7 @@ python gpprefdecrypt.py edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCp
 
 - after only a few seconds I had the password: **Ticketmaster1968**
 
-- ran the following command with the new crednetials to connect to the users share
+- ran the following command with the new credentials to connect to the users share
 
 {% highlight bash %}
 smbclient //10.10.10.100/Users -U Administrator -W ACTIVE -p Ticketmaster1968
