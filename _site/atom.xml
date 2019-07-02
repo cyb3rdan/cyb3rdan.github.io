@@ -4,7 +4,7 @@
  <title>cyb3rdan.com</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2019-07-02T16:16:11+09:30</updated>
+ <updated>2019-07-02T18:29:21+09:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Daniel Souter</name>
@@ -185,7 +185,7 @@ smbmap -H 1.2.3.4 /share -R &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;p&gt;It turns out I only used my recording once, and it was not a critical screenshot, but it was nice knowing I had the recording just in case.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-summary&quot;&gt;The Summary&lt;/h2&gt;
-&lt;p&gt;As I said at the beginning, this process was absolutely amazing and I would definitely recommend it to anyone considering getting their OSCP. For everyone postponing signing up for their labs, there is really no good time to start this process, unless you can commit 100% of your time to it. It will consume all of your free time and you will spend less time with your family and friends. Just start the process and make it work for you. I had 90 days of lab access, while still working full time, and while I probably didn’t need that long it really did help allow me to pace myself and not get completely burnt out, while not abandoning my family enitely.&lt;/p&gt;
+&lt;p&gt;As I said at the beginning, this process was absolutely amazing and I would definitely recommend it to anyone considering getting their OSCP. For everyone postponing signing up for their labs, there is really no good time to start this process, unless you can commit 100% of your time to it. It will consume all of your free time and you will spend less time with your family and friends. Just start the process and make it work for you. I had 90 days of lab access, while still working full time, and while I probably didn’t need that long it really did help me to pace myself and not get completely burnt out, while not abandoning my family entirely. Thankfully I do have an awesome wife and daughter who were super supportive throughout the entire process and I have no doubt that without their support there is no way that I would’ve passed on my first attempt.&lt;/p&gt;
 </content>
  </entry>
  
