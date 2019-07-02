@@ -4,7 +4,7 @@
  <title>cyb3rdan.com</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2019-07-02T18:29:21+09:30</updated>
+ <updated>2019-07-02T19:13:24+09:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Daniel Souter</name>
@@ -277,23 +277,6 @@ smbmap -H 1.2.3.4 /share -R &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;ul&gt;
   &lt;li&gt;to get a shell as Administrator you can simply use the psexec.py impacket script with the same credentials&lt;/li&gt;
 &lt;/ul&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>First Post</title>
-   <link href="http://localhost:4000/2018/11/16/First-Post/"/>
-   <updated>2018-11-16T00:00:00+10:30</updated>
-   <id>http://localhost:4000/2018/11/16/First-Post</id>
-   <content type="html">&lt;p&gt;Creating a blog is something I’ve been wanting to do for a while now, but there have been so many more important things going on in my life that meant I just never got around to it.&lt;/p&gt;
-
-&lt;p&gt;In terms of content, I have been focusing quite a lot on &lt;a href=&quot;https://www.hackthebox.eu/&quot;&gt;Hack The Box&lt;/a&gt; lately, and I will likely start with some walkthroughs once I get around to making my notes more complete.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Other than walkthroughs, I will be starting my &lt;a href=&quot;https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/&quot;&gt;OSCP&lt;/a&gt; journey soon, and am planning to add my thoughts to the many others who have been through the same process before me. The hope is that if I can write about certain tools and processes that it will only increase my chances of passing on my first attempt.&lt;/p&gt;
-
-&lt;p&gt;If that sort of stuff is of any interest to you, then keep an eye out for more posts.&lt;/p&gt;
 </content>
  </entry>
  
