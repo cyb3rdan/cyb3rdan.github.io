@@ -73,7 +73,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2018. All rights reserved.
+      &copy; 2019. All rights reserved.
     </p>
   </div>
 </div>
@@ -95,7 +95,7 @@
         <div class="post">
   <h1 class="post-title">Hack the Box - Active</h1>
   <span class="post-date">13 Dec 2018</span>
-  <p><img src="https://cyb3rdan.com/assets/images/active/active-badge.jpg" alt="active-badge" class="img-responsive" />
+  <p><img src="http://localhost:4000/assets/images/active/active-badge.jpg" alt="active-badge" class="img-responsive" />
 <!--more--></p>
 
 <ul>
@@ -104,7 +104,7 @@
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">nmap <span class="nt">-vv</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-oA</span> initial 10.10.10.100</code></pre></figure>
 
-<p><img src="https://cyb3rdan.com/assets/images/active/active-nmap.jpg" alt="nmap-scan" class="img-responsive" /></p>
+<p><img src="http://localhost:4000/assets/images/active/active-nmap.jpg" alt="nmap-scan" class="img-responsive" /></p>
 
 <ul>
   <li>tested and confirmed that SMB null session could be established using:</li>
@@ -145,11 +145,11 @@
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">./GetUserSPNs.py <span class="nt">-request</span> active.htb/SVC_TGS</code></pre></figure>
 
-<p><img src="https://cyb3rdan.com/assets/images/active/active-impacket.jpg" alt="active-impacket" class="img-responsive" /></p>
+<p><img src="http://localhost:4000/assets/images/active/active-impacket.jpg" alt="active-impacket" class="img-responsive" /></p>
 
 <ul>
   <li>
-    <p>checked the <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat example hashes page</a> for $krb5tgs$23$ format and found that it matches mode 13100</p>
+    <p>checked the <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat example hashes page</a> for $krb5tgs$23$ format and found that it matched mode 13100</p>
   </li>
   <li>
     <p>added the entire $krb5tgs$23$ string above to a file called active.krb, and used hashcat along with the rockyou.txt wordlist to get the password</p>
@@ -163,7 +163,7 @@
     <p>after only a few seconds I had the password: <strong>Ticketmaster1968</strong></p>
   </li>
   <li>
-    <p>ran the following command with the new crednetials to connect to the users share</p>
+    <p>ran the following command with the new credentials to connect to the users share</p>
   </li>
 </ul>
 
@@ -184,6 +184,15 @@
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2019/07/01/oscp/">
+            OSCP
+            <small>01 Jul 2019</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>

