@@ -4,7 +4,7 @@
  <title>cyb3rdan.com</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2019-07-02T19:13:24+09:30</updated>
+ <updated>2019-07-02T19:15:35+09:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Daniel Souter</name>
@@ -19,7 +19,7 @@
    <id>http://localhost:4000/2019/07/01/oscp</id>
    <content type="html">&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/oscp/oscp.png&quot; alt=&quot;oscp&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Well it’s been a while and even though I mentioned in my first post that I would update here during my OSCP journey, study as well as life in general got in the way; so this is going to be a big update. Thankfully though, all that time spent away was well worth it since I did manage to pass the exam on the first attempt, after managing to get the flags on all lab machines. This was definitely one of the most amazing experiences of my life and I could not recommend it more for anyone else that is thinking about starting their OSCP journey. 
+&lt;p&gt;Well it’s been a while and even though I thought I would update here during my OSCP journey, study as well as life in general got in the way; so this is going to be a big update. Thankfully though, all that time spent away was well worth it since I did manage to pass the exam on the first attempt, after managing to get the flags on all lab machines. This was definitely one of the most amazing experiences of my life and I could not recommend it more for anyone else that is thinking about starting their OSCP journey. 
 &lt;!--more--&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;the-exam&quot;&gt;The exam&lt;/h2&gt;
